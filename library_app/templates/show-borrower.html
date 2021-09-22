@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> View Borrower </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+</head>
+
+
+
+
+<body>
+    
+    <h1>{{borrower.Card_id.Card_id}}</h1>
+
+    <hr />
+
+    <div class="solid"> 
+        <center>
+            <strong>
+                <a href="{% url '' %}">Home</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'bor' %}">Add New Borrower</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'std' %}">Add New Book</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'search' %}">Book Search</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'chin-get' %}">Check In Book</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'borsearch' %}">Borrower Search</a> &nbsp; &nbsp; &nbsp;
+                <a href="{% url 'loansearch' %}">Loan Search</a> &nbsp; &nbsp; &nbsp;
+            </strong>
+        </center>
+    </div>
+
+    <hr />
+
+<div class="row">
+    <div class="column left background" style="background-color:darkgrey;"> </div>  
+
+
+    <div class="column middle">
+        <center>
+            
+
+            <h3> Card ID: {{ borrower.Card_id }} </h3>
+
+            <h4>Name: {{borrower.Name}} </h4>
+
+            <h4>Phone: {{borrower.Phone}}</h4>
+
+            <h4>SSN: {{borrower.Ssn}}</h4>
+           
+            <h4>Address: {{borrower.Address}}</h4>
+
+            {% if borLoanCount == 0 %}
+                <h4>You have no book loans! </h4>
+
+            {% else %}
+                <form method="POST" action="">
+                    {% csrf_token %} 
+    
+                <h4>Click a loan below to view:</h4>
+                    {% for loan in borLoan %}
+                    
+                   Loan ID: <a href="{% url 'show-loan' loan.Loan_id %}">{{loan.Loan_id}}</a>&emsp;&emsp;
+                   Isbn: {{loan.Isbn.Isbn}} <br />
+                   Date Checked Out: {{loan.Date_out}} <br />
+                   Due Date: {{loan.Due_Date}} <br />
+                   <br />
+                    {% endfor %}
+    
+                </form>
+
+
+                
+                
+                {% if borLoanCount < 1 %}
+                <h4>You must enter a valid Loan ID </h4>
+                
+
+
+                {% elif borLoanCount >= 3 %}
+                <h4>You cannot have more than 3 book loans at a time </h4>
+                
+                
+                {% endif %}
+
+            {% endif %}
+            <br />
+            <a href="{% url 'edit-borrower' borrower.Card_id %}">Click Here to Update Info</a>
+            
+            <br />
+            <br />
+
+
+            <br />
+            <a href="{% url 'del-bor' borrower.Card_id %}">Click Here to Delete this Borrower from the Library Management System</a>
+            <br />
+            <br />
+
+
+
+        </center>
+           
+            
+        <footer>Made By: Bridgette Bryant, Nicholas Vitale, Paul Percifield, and Roland Chaumont</footer>
+        
+    </div>
+
+    <div class="column right background" style="background-color: darkgrey"> </div>
+
+</div>
+
+<hr />
+	
+
+</body>
+
+
+
+</html>
